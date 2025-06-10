@@ -1,0 +1,45 @@
+function renderFeed() {
+  const feed = document.getElementById('feed');
+  feed.innerHTML = '';
+  posts.forEach((p, i) => {
+    const div = document.createElement('div');
+    div.className = 'post';
+    div.innerHTML = `
+      <img src="${p.img}" alt="${p.title}">
+      <h3>${p.title}</h3>
+      <p>${p.summary}</p>
+    `;
+    div.onclick = () => openReader(p);
+    feed.appendChild(div);
+  });
+}
+
+function renderProfile() {
+  const profileName = document.getElementById('profileName');
+  const profileGrid = document.getElementById('profileGrid');
+  
+  if (user.name) profileName.innerText = user.name;
+  profileGrid.innerHTML = '';
+  
+  posts.filter(p => p.author === user.name).forEach(p => {
+    const d = document.createElement('div');
+    d.className = 'profile-item';
+    d.innerHTML = `
+      <img src="${p.img}" alt="${p.title}">
+      <h4>${p.title}</h4>
+    `;
+    d.onclick = () => openReader(p);
+    profileGrid.appendChild(d);
+  });
+}
+
+function openReader(p) {
+  document.getElementById('readerTitle').textContent = p.title;
+  document.getElementById('readerImage').src = p.img;
+  document.getElementById('readerText').innerText = p.full;
+  document.getElementById('readerModal').classList.remove('hidden');
+}
+
+document.getElementById('closeModal').onclick = () => {
+  document.getElementById('readerModal').classList.add('hidden');
+};
